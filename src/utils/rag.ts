@@ -5,7 +5,7 @@ import { supabase } from './supabase';
  * Fetches relevant school knowledge from Supabase.
  * For now, it returns a consolidated string from the 'knowledge_base' table (or fallback).
  */
-export async function getRagContext(query: string): Promise<string> {
+export async function getRagContext(_query: string): Promise<string> {
     try {
         // In a real RAG implementation, we would use vector search here.
         // For the current requirement, we'll fetch from a structured knowledge table.
