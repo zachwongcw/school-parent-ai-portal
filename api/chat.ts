@@ -114,7 +114,14 @@ export async function POST(req: Request) {
     return result.toTextStreamResponse();
 
   } catch (error: any) {
-    console.error("API Error:", error);
-    return new Response(JSON.stringify({ error: "系統忙碌中", details: error.message }), { status: 500 });
+    console.error("API Error Detailed:", error);
+    return new Response(JSON.stringify({ 
+      error: "系統忙碌中", 
+      details: error.message,
+      stack: error.stack 
+    }), { 
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }

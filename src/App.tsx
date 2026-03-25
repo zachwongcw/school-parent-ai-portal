@@ -201,6 +201,7 @@ const App: React.FC = () => {
       }
 
     } catch (error) {
+      console.error("Chat Error:", error);
       setMessages(prev => [...prev, { id: 'err', role: 'ai', content: '抱歉，系統暫時忙碌中，請稍後再試。', timestamp: new Date() }]);
     } finally {
       setIsTyping(false);
