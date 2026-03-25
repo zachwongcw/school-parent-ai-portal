@@ -1,7 +1,7 @@
 import { createOpenAI } from '@ai-sdk/openai';
 import { streamText, tool } from 'ai';
 import { z } from 'zod';
-import { checkCrisisTrigger, EMERGENCY_PAYLOAD } from '../src/utils/safetyCheck';
+import { checkCrisisTrigger, EMERGENCY_PAYLOAD } from '../src/utils/safety';
 import { getRagContext } from '../src/utils/rag';
 import { createClient } from '@supabase/supabase-js';
 

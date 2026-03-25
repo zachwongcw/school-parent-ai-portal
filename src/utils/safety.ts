@@ -17,7 +17,15 @@ export const EMERGENCY_MESSAGE = `聽到這裡，我非常擔心孩子/您的安
 
 我已經將您的情況標記為「緊急」，請務必先照顧好人身安全。`;
 
-export function checkSafety(text: string): boolean {
+export const EMERGENCY_PAYLOAD = {
+  role: 'ai',
+  content: EMERGENCY_MESSAGE,
+  type: 'emergency',
+  timestamp: new Date().toISOString()
+};
+
+export function checkCrisisTrigger(text: string): boolean {
+  if (!text) return false;
   const lowerText = text.toLowerCase();
   
   // 1. Keyword Check
@@ -28,3 +36,6 @@ export function checkSafety(text: string): boolean {
   
   return hasSafetyKeyword || hasInjection;
 }
+
+// Keep alias for frontend if needed
+export const checkSafety = checkCrisisTrigger;
