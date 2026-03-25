@@ -1,9 +1,15 @@
-import { google } from '@ai-sdk/google';
+import { createOpenAI } from '@ai-sdk/openai';
 import { streamText, tool } from 'ai';
 import { z } from 'zod';
 import { checkCrisisTrigger, EMERGENCY_PAYLOAD } from '../src/utils/safetyCheck';
 import { getRagContext } from '../src/utils/rag';
 import { createClient } from '@supabase/supabase-js';
+
+// Configure Alibaba DashScope (OpenAI-compatible)
+const alibaba = createOpenAI({
+  apiKey: process.env.ALIBABA_API_KEY,
+  baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+});
 
 // Vercel Serverless configuration (Web API)
 export const maxDuration = 30;
@@ -76,7 +82,7 @@ export async function POST(req: Request) {
 
     // 5. Build AI Result
     const result = streamText({
-      model: google('gemini-1.5-flash'),
+      model: alibaba('qwen-plus'),
       system: systemPrompt,
       messages: recentMessages,
       stopWhen: ({ steps }) => steps.length >= 5,
