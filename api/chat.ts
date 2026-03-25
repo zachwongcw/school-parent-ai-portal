@@ -26,6 +26,15 @@ const getSupabaseServer = () => {
 };
 
 export async function POST(req: Request) {
+  // Health Check
+  const { searchParams } = new URL(req.url);
+  if (searchParams.get('check') === 'true') {
+    return new Response(JSON.stringify({ status: 'ok', provider: 'alibaba-qwen' }), { 
+      status: 200, 
+      headers: { 'Content-Type': 'application/json' } 
+    });
+  }
+
   try {
     const { message, history, studentId } = await req.json();
 
