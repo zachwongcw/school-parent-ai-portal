@@ -95,6 +95,23 @@ const App: React.FC = () => {
 
     try {
       setAuthError('');
+
+      // Admin Bypass: Use 'admin' for all fields
+      if (
+        data.studentClass.toLowerCase() === 'admin' &&
+        data.studentNo.toLowerCase() === 'admin' &&
+        data.studentName.toLowerCase() === 'admin' &&
+        data.parentName.toLowerCase() === 'admin'
+      ) {
+        setUserInfo({
+          ...data,
+          studentName: '系統管理員 (Admin)',
+          parentName: '系統管理員'
+        });
+        setIsAuthenticated(true);
+        return;
+      }
+
       // In a real production app, we would use Supabase Auth or a secure verification RPC.
       // For this migration, we verify against the new 'students' table in Supabase.
       const { supabase } = await import('./utils/supabase');
