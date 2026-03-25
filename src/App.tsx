@@ -200,9 +200,13 @@ const App: React.FC = () => {
         ));
       }
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("Chat Error:", error);
-      setMessages(prev => [...prev, { id: 'err', role: 'ai', content: '抱歉，系統暫時忙碌中，請稍後再試。', timestamp: new Date() }]);
+      let errorMsg = '抱歉，系統暫時忙碌中，請稍後再試。';
+      if (error.message && error.message.includes('ALIBABA_API_KEY')) {
+        errorMsg = '系統未配置阿里雲API金鑰。請在Vercel後台添加 ALIBABA_API_KEY。';
+      }
+      setMessages(prev => [...prev, { id: 'err', role: 'ai', content: errorMsg, timestamp: new Date() }]);
     } finally {
       setIsTyping(false);
     }

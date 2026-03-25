@@ -5,14 +5,19 @@ import { checkCrisisTrigger, EMERGENCY_PAYLOAD } from '../src/utils/safetyCheck'
 import { getRagContext } from '../src/utils/rag';
 import { createClient } from '@supabase/supabase-js';
 
-// Configure Alibaba DashScope (OpenAI-compatible)
-const alibaba = createOpenAI({
-  apiKey: process.env.ALIBABA_API_KEY,
-  baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
-});
-
 // Vercel Serverless configuration (Web API)
 export const maxDuration = 30;
+
+const getAlibabaProvider = () => {
+  const apiKey = process.env.ALIBABA_API_KEY;
+  if (!apiKey) {
+    throw new Error("ALIBABA_API_KEY is missing. Please add it to Vercel Environment Variables.");
+  }
+  return createOpenAI({
+    apiKey,
+    baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+  });
+};
 
 const getSupabaseServer = () => {
   const url = process.env.SUPABASE_URL || '';
@@ -81,6 +86,7 @@ export async function POST(req: Request) {
     `;
 
     // 5. Build AI Result
+    const alibaba = getAlibabaProvider();
     const result = streamText({
       model: alibaba('qwen-plus'),
       system: systemPrompt,
